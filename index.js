@@ -33,7 +33,7 @@ app.delete("/DELETE-data-table", async (req, res) => {
 });
 
 
-
+/*
 app.post("/create-data-table", async (req, res) => {
   try {
     const tableName = "device_logs";
@@ -157,7 +157,7 @@ app.get("/temperatura", (req, res) => {
 app.listen(PORT, () => {
 console.log(`servidor corriendo en puerto ${PORT}`);
 });
-
+*/ 
 
 
 
