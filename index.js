@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.delete("/DELETE-data-table", async (req, res) => {
   try {
-    const tableName = "data";
+    const tableName = "device_logs";
 
     const checkTable = await pool.query(`SELECT to_regclass($1) AS exists`, [
       tableName,
