@@ -235,7 +235,7 @@ app.post("/turn-on", async (req, res) => {
 
 app.post("/turn-off", async (req, res) => {
   try {
-    await pool.query(DELETE `FROM relay_status WHERE id = 1`);
+    await pool.query(`DELETE FROM relay_status WHERE id = 1`);
     return res.json({ status: { isOn: false } });
   } catch (err) {
     console.error("Error /turn-off:", err.message);
