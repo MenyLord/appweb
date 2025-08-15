@@ -32,6 +32,30 @@ app.delete("/DELETE-data-table", async (req, res) => {
   }
 });
 
+app.delete("/DELETE-data-table2", async (req, res) => {
+  try {
+    const tableName = "device_logs";
+
+    const checkTable = await pool.query(`SELECT to_regclass($1) AS exists`, [
+      tableName,
+    ]);
+
+    if (checkTable.rows[0].exists) {
+      await pool.query(`
+        DROP TABLE ${tableName};
+      `);
+
+      return res.status(201).json({ message: "✅ Tabla Eliminada exitosamente" });
+    } else {
+      return res.status(200).json({ message: "ℹLa tabla no existe" });
+    }
+  } catch (error) {
+    console.error("❌ Error:", error);
+    res.status(500).json({ error: "Error al procesar la solicitud" });
+  }
+});
+
+
 
 
 app.post("/create-data-table", async (req, res) => {
