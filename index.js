@@ -33,7 +33,52 @@ app.delete("/DELETE-data-table", async (req, res) => {
 });
 
 
-/*
+
+app.post("/create-data-table", async (req, res) => {
+  try {
+    const tableName = "device_logs";
+
+    const checkTable = await pool.query(
+      `SELECT to_regclass('${tableName}') AS exists`
+    );
+
+    if (!checkTable.rows[0].exists) {
+      await pool.query(`
+        CREATE TABLE device_logs (
+        id SERIAL PRIMARY KEY,
+        action VARCHAR(50) NOT NULL,
+        "user" TEXT NOT NULL,
+        enroll_id TEXT NOT NULL,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+      `);
+
+      return res.status(201).json({ message: "✅ Tabla creada exitosamente" });
+    } else {
+      return res.status(200).json({ message: "ℹ️ La tabla ya existe" });
+    }
+  } catch (error) {
+    console.error("❌ Error:", error);
+    res.status(500).json({ error: "Error al procesar la solicitud" });
+  }
+});
+
+app.get("/get-data", async (req, res) => {
+  const tableName = "data";
+
+  try {
+    const result = await pool.query(`SELECT * FROM ${tableName}`);
+    return res.json(result.rows);
+  } catch {
+    return res.status(500).json({ error: "Imposible regresar los datos" });
+  }
+});
+
+
+
+
+
+
+
 app.get("/get-data", async (req, res) => {
   const tableName = "data";
 
@@ -96,24 +141,6 @@ const PORT = process.env.PORT || 3007;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor escuchando en el puerto, ${PORT}`);
 });
-
-app.get("/Nana", (req, res) => {
-  res.json({ nombre: "Nana", apellido: "Osaki" });
-});
-
-app.get("/velocidad", (req, res) => {
-  res.json({ nombre: "Nubia", apellido: "sanchez" });
-});
-
-app.get("/temperatura", (req, res) => {
-  res.json({ valor: "10°C", timestamp: new Date().toISOString() });
-});
-
-app.listen(PORT, () => {
-console.log(`servidor corriendo en puerto ${PORT}`);
-});
-*/ 
-
 
 
 
