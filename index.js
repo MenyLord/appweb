@@ -134,33 +134,7 @@ app.post("/savedata", async (req, res) => {
       error: "Error al procesar la solicitud",
     });
   }
-})
-
-
-
-  
-app.post("/turn-on", async (req, res) => {
-  const { user, enrollId } = req.body;
-  const deviceStatus = {};
-  deviceStatus.isOn = true;
-
-  try {
-    await pool.query(
-      `INSERT INTO device_logs (action, "user", enroll_id) VALUES ($1, $2, $3)`,
-      ["turn-on", user, enrollId]
-    );
-
-    return res.json({
-      message: "Dispositivo encendido",
-      status: deviceStatus,
-    });
-  } catch (err) {
-    console.error("Error al guardar log:", err);
-    return res.status(500).json({ error: "Error al guardar log" });
-  }
 });
-
-
 const PORT = process.env.PORT || 3007;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor escuchando en el puerto, ${PORT}`);
